@@ -16,34 +16,8 @@ counties <- counties %>%
 	filter(!is.na(state_abb))
 
 
-# Tried this version, didn't work:
-# baseurl <- "https://api.usaspending.gov/api/v2/"
-# endpoint <- "search/transaction_spending_summary/"
-# for(i in 1:nrow(counties)){
-# 	params <- toJSON(list(filters = list(place_of_performance_locations = data.frame(country = "USA",
-# 																											state = counties$state_abb[i],
-# 																											county = counties$countyfips[i]),
-# 								 time_period = data.frame("start_date" = "2011-01-01",
-# 								 									"end_date" = "2011-01-30")
-# 	)),pretty=T)
-# 	write_json(params,"params.json")
-# 	resp <- POST(url = paste0(baseurl,endpoint), 
-# 							 body = params,
-# 							 # body = upload_file("params.json"),
-# 							 encode = "json")
-# 	json <- content(resp, "text",encoding = "UTF-8")
-# 	API_data <- fromJSON(json,flatten=T)
-# 	
-# 	# download.file(url = URLencode(counties$url_txt[i]),
-# 	# 							destfile = paste0(".zip"),
-# 	# 							method="auto",quiet=F,
-# 	# 							mode="w",
-# 	# 							cacheOK=F)
-# }
-
-
 baseurl <- "https://api.usaspending.gov/api/v2/"
-endpoint <- "search/spending_by_geography/"
+endpoint <- "search/transaction_spending_summary/"
 years <- c(2008:2018) # designate years you want to scrape
 # nrow(counties)
 # doesn't seem to like doing a vector of all counties at once, so separating this out
@@ -106,8 +80,8 @@ dim(dupes)
 
 
 
-save(allyears,file="../../Data/usa_spending.RData")
-write_csv(allyears,path = "../../Data/usa_spending.csv")
+save(allyears,file="../../Data/usa_spending_grants.RData")
+write_csv(allyears,path = "../../Data/usa_spending_grants.csv")
 # this returns the sum of "federal_action_obligation" according to the API documentation page:
 # https://github.com/fedspendingtransparency/usaspending-api/blob/dev/usaspending_api/api_docs/api_documentation/advanced_award_search/spending_by_geography.md
 
